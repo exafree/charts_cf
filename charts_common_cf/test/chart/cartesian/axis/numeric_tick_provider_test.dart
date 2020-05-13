@@ -493,4 +493,441 @@ void main() {
     expect(ticks[4].value, equals(-22));
     expect(ticks[5].value, equals(-19));
   });
+
+  test('handles NaN to NaN', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = true
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+
+    when(scale.viewportDomain)
+        .thenReturn(NumericExtents(1.0, double.nan));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    //print('tickValues=$tickValues');
+    expect(tickValues, equals([1.0, 2.0, 3.0, 4.0, 5.0]));
+  });
+
+  test('handles 1.0 to NaN', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = true
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+
+    when(scale.viewportDomain)
+        .thenReturn(NumericExtents(1.0, double.nan));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    //print('ticks=$ticks');
+    expect(tickValues, equals([1.0, 2.0, 3.0, 4.0, 5.0]));
+  });
+
+  test('handles -NaN to -1', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = true
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+
+    when(scale.viewportDomain)
+        .thenReturn(NumericExtents(-double.nan, 1.0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): -Nan to -1 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues, equals([0.0, 1.0, 2.0, 3.0, 4.0]));
+  });
+
+
+  test('handles -100.0 to -1.0', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+
+    when(scale.viewportDomain)
+        .thenReturn(NumericExtents(-100.0, -1.0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    //print('tickValues=$tickValues');
+    expect(tickValues, equals([-100.0, -75.0, -50.0, -25.0, 0.0]));
+  });
+
+  test('handles -1e18 to 0.0', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(-1e18, 0.0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    expect(tickValues,
+        equals([
+              -1000000000000000000.0,
+              -750000000000000000.0,
+              -500000000000000000.0,
+              -250000000000000000.0,
+              0.0  ]));
+  });
+
+  test('handles -1e19 to 0.0', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(-1e19, 0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): -1e19 to 0.0 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([-10136092888451461000.0,
+              -7602069666338596000.0,
+              -5068046444225731000.0,
+              -2534023222112865300.0,
+              0.0]));
+  });
+
+  test('handles -1e300 to 0.0', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(-1e300, 0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): -1e300 to 0.0 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity]));
+  });
+
+  test('handles -maxFinite to 0.0', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(-double.maxFinite, 0.0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): -maxFinite to 0.0 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity]));
+  });
+
+  test('handles negativeInfinity to 0.0', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(double.negativeInfinity, 0.0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): negativeInfinity to 0.0 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity]));
+  });
+
+  test('handles 0.0 to 1e18', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(0.0, 1e18));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    expect(tickValues,
+        equals([0.0,
+              250000000000000000.0,
+              500000000000000000.0,
+              750000000000000000.0,
+              1000000000000000000.0]));
+  });
+
+  test('handles 0.0 to 1e19', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(-1e19, 0));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): 0.0 to 1e19 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([-10136092888451461000.0,
+              -7602069666338596000.0,
+              -5068046444225731000.0,
+              -2534023222112865300.0,
+              0.0]));
+  });
+
+  test('handles 0.0 to 1e300', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(0.0, 1e300));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): 0.0 to 1e300 looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([0.0, 1.0, 2.0, 3.0, 4.0]));
+  });
+
+
+  test('handles 0.0 to maxFinite', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(0.0, double.maxFinite));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): 0.0 to infinity, looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([0.0, 1.0, 2.0, 3.0, 4.0]));
+  });
+
+  test('handles 0.0 to infinity', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(0, double.infinity));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): 0.0 to infinity, looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([0.0, 1.0, 2.0, 3.0, 4.0]));
+  });
+
+  test('handles -infinity to infinity', () {
+    tickProvider
+      ..zeroBound = false
+      ..dataIsInWholeNumbers = false
+      ..setFixedTickCount(5);
+
+    final drawStrategy = FakeDrawStrategy(10, 10);
+    when(scale.viewportDomain).thenReturn(NumericExtents(double.negativeInfinity, double.infinity));
+    when(scale.rangeWidth).thenReturn(1000);
+
+    final ticks = tickProvider.getTicks(
+        context: context,
+        graphicsFactory: graphicsFactory,
+        scale: scale,
+        formatter: formatter,
+        formatterValueCache: <num, String>{},
+        tickDrawStrategy: drawStrategy,
+        orientation: null);
+
+    final tickValues = ticks.map((tick) => tick.value).toList();
+
+    // TODO(wink): -infinity to +infinity looks wrong?
+    //print('tickValues=$tickValues');
+    expect(tickValues,
+        equals([double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity,
+            double.negativeInfinity]));
+  });
 }

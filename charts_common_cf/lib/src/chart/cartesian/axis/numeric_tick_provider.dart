@@ -97,7 +97,7 @@ class NumericTickProvider extends BaseTickProvider<num> {
   /// It should prevent the scale from choosing fractional ticks.  For example,
   /// if you had a office head count, don't generate a tick for 1.5, instead
   /// jump to 2.
-  ///
+  //
   /// Note that the provider will choose whole number ticks in the axis units,
   /// not data units if a data to axis unit converter is set.
   bool dataIsInWholeNumbers = true;
@@ -413,7 +413,14 @@ class NumericTickProvider extends BaseTickProvider<num> {
     // If the range contains zero, ensure that zero is a tick.
     if (high >= 0 && low <= 0) {
       // determine the ratio of regions that are above the zero axis.
-      final posRegionRatio = (high > 0 ? min(1.0, high / (high - low)) : 0.0);
+      var posRegionRatio = (high > 0 ? min(1.0, high / (high - low)) : 0.0);
+      if (posRegionRatio.isNaN || posRegionRatio.isInfinite) {
+        if (posRegionRatio.isNegative) {
+          posRegionRatio = 1e100;
+        } else {
+          posRegionRatio = 1e100;
+        }
+      }
       var positiveRegionCount = (regionCount * posRegionRatio).ceil();
       var negativeRegionCount = regionCount - positiveRegionCount;
       // Ensure that negative regions are not excluded, unless there are no
@@ -541,7 +548,8 @@ class NumericTickProvider extends BaseTickProvider<num> {
   /// [number] of -63 returns -100
   /// [number] of 0.63 returns 1
   static double _getEnclosingPowerOfTen(num number) {
-    if (number == 0) {
+    if (number == 0 || number.isNaN || number.isInfinite) {
+    //if (number == 0) {
       return 1.0;
     }
 
@@ -551,7 +559,8 @@ class NumericTickProvider extends BaseTickProvider<num> {
 
   /// Returns the step numerically less than the number by step increments.
   static double _getStepLessThan(double number, double stepSize) {
-    if (number == 0.0 || stepSize == 0.0) {
+    if (number == 0.0 || number.isNaN || number.isInfinite || stepSize == 0.0) {
+    //if (number == 0.0 || stepSize == 0.0) {
       return 0.0;
     }
     return (stepSize > 0.0

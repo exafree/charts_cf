@@ -107,12 +107,14 @@ class MockChartCanvas extends Mock implements ChartCanvas {}
 
 /// Helper function to create [Tick] for testing.
 Tick<String> createTick(String value, double locationPx,
-    {double horizontalWidth,
+    {double labelOffsetPx,
+    double horizontalWidth,
     double verticalWidth,
     TextDirection textDirection}) {
   return Tick<String>(
       value: value,
       locationPx: locationPx,
+      labelOffsetPx: labelOffsetPx,
       textElement: FakeTextElement(
           value, textDirection, horizontalWidth, verticalWidth));
 }
@@ -526,6 +528,102 @@ void main() {
 
       final labelLine =
           verify(chartCanvas.drawText(captureAny, 20, 980, rotation: 0))
+              .captured
+              .single;
+      expect(labelLine.text, 'A');
+    });
+
+    test('Draw label with locationPx and labelOffset being null', () {
+      final chartCanvas = MockChartCanvas();
+      final axisBounds = Rectangle<int>(0, 0, 1000, 1000);
+
+      // A null locationPx defaults to 0
+      final Tick<String> tickNullLocationPx =
+        createTick('A', null, labelOffsetPx: null,
+            horizontalWidth: 10.0, verticalWidth: 15.0);
+
+      drawStrategy.drawLabel(
+        chartCanvas,
+        tickNullLocationPx,
+        orientation: AxisOrientation.top,
+        axisBounds: axisBounds,
+      );
+
+      // verify offsetX is 0
+      final labelLine =
+          verify(chartCanvas.drawText(captureAny, 0, 980, rotation: 0))
+              .captured
+              .single;
+      expect(labelLine.text, 'A');
+    });
+
+    test('Draw label with locationPx and labelOffset being nan', () {
+      final chartCanvas = MockChartCanvas();
+      final axisBounds = Rectangle<int>(0, 0, 1000, 1000);
+
+      // A null locationPx defaults to 0
+      final Tick<String> tickNullLocationPx =
+        createTick('A', double.nan, labelOffsetPx: double.nan,
+            horizontalWidth: 10.0, verticalWidth: 15.0);
+
+      drawStrategy.drawLabel(
+        chartCanvas,
+        tickNullLocationPx,
+        orientation: AxisOrientation.top,
+        axisBounds: axisBounds,
+      );
+
+      // verify offsetX is 0
+      final labelLine =
+          verify(chartCanvas.drawText(captureAny, 0, 980, rotation: 0))
+              .captured
+              .single;
+      expect(labelLine.text, 'A');
+    });
+
+    test('Draw label with locationPx and labelOffset being infinity', () {
+      final chartCanvas = MockChartCanvas();
+      final axisBounds = Rectangle<int>(0, 0, 1000, 1000);
+
+      // A null locationPx defaults to 0
+      final Tick<String> tickNullLocationPx =
+        createTick('A', double.infinity, labelOffsetPx: double.infinity,
+            horizontalWidth: 10.0, verticalWidth: 15.0);
+
+      drawStrategy.drawLabel(
+        chartCanvas,
+        tickNullLocationPx,
+        orientation: AxisOrientation.top,
+        axisBounds: axisBounds,
+      );
+
+      // verify offsetX is 0
+      final labelLine =
+          verify(chartCanvas.drawText(captureAny, 0, 980, rotation: 0))
+              .captured
+              .single;
+      expect(labelLine.text, 'A');
+    });
+
+    test('Draw label with locationPx and labelOffset being negativeInfinity', () {
+      final chartCanvas = MockChartCanvas();
+      final axisBounds = Rectangle<int>(0, 0, 1000, 1000);
+
+      // A null locationPx defaults to 0
+      final Tick<String> tickNullLocationPx =
+        createTick('A', double.negativeInfinity, labelOffsetPx: double.negativeInfinity,
+            horizontalWidth: 10.0, verticalWidth: 15.0);
+
+      drawStrategy.drawLabel(
+        chartCanvas,
+        tickNullLocationPx,
+        orientation: AxisOrientation.top,
+        axisBounds: axisBounds,
+      );
+
+      // verify offsetX is 0
+      final labelLine =
+          verify(chartCanvas.drawText(captureAny, 0, 980, rotation: 0))
               .captured
               .single;
       expect(labelLine.text, 'A');
