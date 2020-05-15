@@ -1,7 +1,6 @@
 name: charts_common
 version: 0.10.0
 description: A common library for charting packages.
-author: Exafree community
 homepage: https://github.com/exafree/charts_community
 
 environment:
