@@ -1,3 +1,7 @@
+# 0.10.2+1
+
+* Fix issue #8 "An assert in LayoutConfig.getMinPixel fires sometimes" with PR #10
+
 # 0.10.2
 * Try again, forgot to add homepage to sed script for pubspec.
 * Tweak link in charts_flutter_cf/README.md to github.com/exafree/charts_cf
