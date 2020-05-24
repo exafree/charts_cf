@@ -1,5 +1,7 @@
 # Charts Community Fork
 
+[Gitter exafree/charts_cf chat room](https://gitter.im/exafree/charts_cf)
+
 This repo, charts_cf, is a fork of [google/charts](https://github.com/google/charts)
 
 This fork is necessary as Google is not currently accepting pull
