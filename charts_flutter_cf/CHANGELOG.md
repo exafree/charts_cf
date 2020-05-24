@@ -1,6 +1,7 @@
 # 0.10.2+1
 
 * Fix issue #8 "An assert in LayoutConfig.getMinPixel fires sometimes" with PR #10
+* Add flutter_export_environment.sh to .gitignore
 
 # 0.10.2
 * Try again, forgot to add homepage to sed script for pubspec.
