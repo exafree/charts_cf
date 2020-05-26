@@ -567,8 +567,8 @@ class NumericTickProvider extends BaseTickProvider<num> {
   /// @return the rounded number.
   static double _removeRoundingErrors(double number) {
     // sufficiently large multiplier to handle generating ticks on the order
-    // of 10^-9.
-    const multiplier = 1.0e9;
+    // of 10^-12.
+    const multiplier = 1.0e12;
 
     return number > 100.0
         ? number.roundToDouble()
