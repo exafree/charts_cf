@@ -343,8 +343,16 @@ abstract class BaseTickDrawStrategy<D> implements TickDrawStrategy<D> {
       @required Rectangle<int> drawAreaBounds,
       @required bool isFirst,
       @required bool isLast}) {
-    final locationPx = tick.locationPx;
-    final labelOffsetPx = tick.labelOffsetPx ?? 0;
+    final locationPx = (tick.locationPx == null ||
+          tick.locationPx.isNaN ||
+          tick.locationPx.isInfinite)
+        ? 0
+        : tick.locationPx;
+    final labelOffsetPx = (tick.labelOffsetPx == null ||
+          tick.labelOffsetPx.isNaN ||
+          tick.labelOffsetPx.isInfinite)
+        ? 0
+        : tick.labelOffsetPx;
     final isRtl = chartContext.isRtl;
     final labelElements = _splitLabel(tick.textElement);
     final labelHeight = _getLabelHeight(labelElements);
