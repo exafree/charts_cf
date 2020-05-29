@@ -3,7 +3,10 @@
 
 AT=@
 .PHONY: all
-all:
+all: help
+
+.PHONY: help
+help:
 	@echo "Usage charts_cf: make [Target]"
 	@echo "  Run commands for building, testing and publishing"
 	@echo "  charts_common_cf and charts_flutter_cf"
@@ -11,10 +14,11 @@ all:
 	@echo "Targets:"
 	@echo "  get:                  Get packages needed for charts_common_cf and charts_flutter_cf"
 	@echo "  test:                 Test charts_common_cf and charts_flutter_cf"
-	@echo "  test_common_failing:  Test failures are reported in charts_common_cf"
-	@echo "  test_flutter_failing: Test failures are reported in charts_flutter_cf"
 	@echo "  dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf"
 	@echo "  publish:              Publish charts_common_cf and charts_flutter_cf"
+	@echo "  test_common_failing:  Test failures are reported in charts_common_cf"
+	@echo "  test_flutter_failing: Test failures are reported in charts_flutter_cf"
+	@echo "  help:                 This help message"
 
 .PHONY: get
 get: get_common get_flutter
