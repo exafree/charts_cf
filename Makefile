@@ -88,6 +88,10 @@ dry-run_flutter:
 	   flutter pub publish --dry-run; \
 	   ../tools_cf/change_common_to_path.sh)
 
+.PHONY: update_version
+update_version:
+	tools_cf/update_version.sh
+
 .PHONY: publish
 publish: get test publish_common publish_flutter
 
