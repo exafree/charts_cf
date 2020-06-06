@@ -312,7 +312,6 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
         switch (anchor) {
           case BarLabelAnchor.middle:
             labelElement.textDirection = rtl ? TextDirection.rtl : TextDirection.ltr;
-                    bounds.width / 2 -
             if (rtl) {
               labelX = (bounds.right -
                   bounds.width / 2 +
