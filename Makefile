@@ -15,6 +15,8 @@ help:
 	@echo "  get:                  Get packages needed for charts_common_cf and charts_flutter_cf"
 	@echo "  test:                 Test charts_common_cf and charts_flutter_cf"
 	@echo "  gen-changelog:        Generate CHANGELOG.md for charts_common_cf and charts_flutter_cf"
+	@echo "  update_version:       Update version numbers in pubspec.yaml files"
+	@echo "                           Example usage: charts_ver=0.10.3 make update_version"
 	@echo "  dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf"
 	@echo "  publish:              Publish charts_common_cf and charts_flutter_cf"
 	@echo "  test_common_failing:  Test failures are reported in charts_common_cf"
