@@ -2,12 +2,61 @@
 
 [Gitter exafree/charts_cf chat room](https://gitter.im/exafree/charts_cf)
 
-This repo, charts_cf, is a fork of [google/charts](https://github.com/google/charts
+This repo, charts_cf, is a fork of [google/charts](https://github.com/google/charts)
 and provides a charting module, [charts_flutter_cf](https://pub.dev/packages/charts_flutter_cf) for flutter.
 
-# Development
+This fork is necessary as Google is not currently accepting pull
+requests and there are bugs that need to be fixed and features the
+community feels need to be added.
 
-Contributations are welcome by creating a Pull request on the [charts_cf repo](https://github.com/exafree/charts_cf).
+## Guide lines
+
+The master branch of this repo will be the same as a commit on
+the master branch of google/charts and will be synchronized with the most
+current commit google/charts master as soon as practical. The release branch of
+this repo will then be rebaased on top of master and a new release
+created soon thereafter.
+
+The version number of a charts_cf release will follow
+Dart's [package versioning](https://dart.dev/tools/pub/versioning) spec.
+The major number will be the same as google/charts with minor version
+number being greather than the google/charts minor version. This means
+that the charts_cf public API will **always** be backwards compatible with
+google/charts, but have new functionality or improvements as stated in
+[semver spec](https://semver.org/spec/v2.0.0-rc.1.html) rule 8.
+
+Long term we hope that Google will accpet changes directly, but until
+such time we will do our best to fix bugs and enhance google/charts
+and remain backwards compatible.
+
+## Pull requests
+
+We look forward to seeing pull requests. In general we desire that
+an [issue be created](https://git@github.com/exafree/charts_cf/issues)
+before a PR is merged and it's probably a good idea to create an issue
+before creating a PR so we might discuss solutions. When creating
+the commit message add a "Fixes: #xx" line in the last paragraph of
+the commit message, where xx is the issue number. This will link the
+PR with an issue and when the PR is closed the issue will also be closed.
+Also, links will appear between the PR and Issue will appear in
+CHANGELOG.md.
+
+Of great importance is that tests should be provided with a PR, these
+can extend a current test file or a new test file can be created. If
+in doubt we suggest creating a new test file as it will be easier to
+merge/rebase changes into google/charts.
+
+## Dependencies
+ - Dart
+ - Flutter
+
+### Development Dependencies
+ - Gnu make
+ - git
+ - npm
+   - auto-changelog
+
+## Development
 
 To make a pull request fork the repoistory, create a branch,
 add your feature or fix a bug and create a commit. Push that branch to
@@ -20,7 +69,7 @@ There are actually two modules in this repo, charts_flutter_cf located in
 I when working on a feature or bug fix in your fork one work flow is to clone
 your fork as a submodule in a project that will be using `charts_flutter_cf`.
 
-For example, I use `flutter_benchmarkx_gui`. To get started with you own
+For example, I use `flutter_benchmarkx_gui`. To get started with your own
 test application update your `pubspec.yaml` commenting out the pub.dev
 dependency and change it to use `path: submodules/charts_cf/charts_flutter_cf`:
 ```
@@ -99,9 +148,9 @@ whatever feature or bug fix you desire in `submodules/charts_cf/`. When it's
 working and tests are written, create a pull request from your fork to
 exafree/charts_cf.
 
-# Makefile
+## Makefile
 
-The make file convience commands to get dependencies, test and publish
+The make file provides convience commands to get dependencies, test and publish
 charts_cf:
 ```
 $ make
@@ -112,31 +161,10 @@ Usage charts_cf: make [Target]
 Targets:
   get:                  Get packages needed for charts_common_cf and charts_flutter_cf
   test:                 Test charts_common_cf and charts_flutter_cf
+  gen-changelog:        Generate CHANGELOG.md for charts_common_cf and charts_flutter_cf
   dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf
   publish:              Publish charts_common_cf and charts_flutter_cf
   test_common_failing:  Test failures are reported in charts_common_cf
   test_flutter_failing: Test failures are reported in charts_flutter_cf
   help:                 This help message
 ```
-# Background
-
-This fork is necessary as Google is not currently accepting pull
-requests and there are bugs that need to be fixed and features the
-community feels need to be added.
-
-# Goals
-
-The current proposal is that the master branch of this repo
-will be the same as a commit on the master branch of
-google/charts and will be synchronized with the most
-current commit as soon as practical. The master branch will
-then be merged with our release branch ASAP. A new release
-will be created soon thereafter.
-
-The version number of a charts_cf release will follow
-Dartx27s [package versioning](https://dart.dev/tools/pub/versioning)spec and the value will be advanced from as google/charts with
-the minor version field incremented by 1 and the patch field will
-be 0. This means that the charts_cf public API will
-**always** be backwards compatible with google/charts, but have
-new functionality or improvements as stated in
-[semver spec](https://semver.org/spec/v2.0.0-rc.1.html) rule 8.

@@ -14,6 +14,7 @@ help:
 	@echo "Targets:"
 	@echo "  get:                  Get packages needed for charts_common_cf and charts_flutter_cf"
 	@echo "  test:                 Test charts_common_cf and charts_flutter_cf"
+	@echo "  gen-changelog:        Generate CHANGELOG.md for charts_common_cf and charts_flutter_cf"
 	@echo "  dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf"
 	@echo "  publish:              Publish charts_common_cf and charts_flutter_cf"
 	@echo "  test_common_failing:  Test failures are reported in charts_common_cf"
@@ -60,6 +61,18 @@ test_flutter_failing:
 	rm -f test/failing_test.dart; \
 	exit $${result})
 
+.PHONY: gen-changelog
+gen-changelog: gen-changelog_common gen-changelog_flutter
+
+.PHONY: gen-changelog_common
+gen-changelog_common:
+	$(AT)(cd charts_common_cf; \
+	auto-changelog --stdout | cat - ../tools_cf/charts_common.original.CHANGELOG.md > CHANGELOG.md)
+
+.PHONY: gen-changelog_flutter
+gen-changelog_flutter:
+	$(AT)(cd charts_flutter_cf; \
+	auto-changelog --stdout | cat - ../tools_cf/charts_flutter.original.CHANGELOG.md > CHANGELOG.md)
 
 .PHONY: dry-run
 dry-run: dry-run_common dry-run_flutter
