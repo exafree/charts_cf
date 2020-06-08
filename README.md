@@ -162,6 +162,8 @@ Targets:
   get:                  Get packages needed for charts_common_cf and charts_flutter_cf
   test:                 Test charts_common_cf and charts_flutter_cf
   gen-changelog:        Generate CHANGELOG.md for charts_common_cf and charts_flutter_cf
+  update_version:       Update version numbers in pubspec.yaml files
+                           Example usage: charts_ver=0.10.3 make update_version
   dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf
   publish:              Publish charts_common_cf and charts_flutter_cf
   test_common_failing:  Test failures are reported in charts_common_cf
