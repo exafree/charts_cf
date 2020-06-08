@@ -73,7 +73,7 @@ For example, I use `flutter_benchmarkx_gui`. To get started with your own
 test application update your `pubspec.yaml` commenting out the pub.dev
 dependency and change it to use `path: submodules/charts_cf/charts_flutter_cf`:
 ```
-  #charts_flutter_cf: ^0.10.2
+  #charts_flutter_cf: ^0.10.2+cf
   charts_flutter_cf:
     path: submodules/charts_cf/charts_flutter_cf
 ```
@@ -148,6 +148,75 @@ whatever feature or bug fix you desire in `submodules/charts_cf/`. When it's
 working and tests are written, create a pull request from your fork to
 exafree/charts_cf.
 
+## Releasing
+
+You can release from a fork.
+
+1. Fork exafree/charts and clone, if you've not already done so.
+2. Add an upstream remote, if you've not already done so.
+```
+$ git remote add upstream git@github.com:exafree/charts_cf
+$ git remote -v
+origin	git@github.com:winksaville/charts_cf (fetch)
+origin	git@github.com:winksaville/charts_cf (push)
+upstream	git@github.com:exafree/charts_cf (fetch)
+upstream	git@github.com:exafree/charts_cf (push)
+```
+3. Sync with upstream and be sure your clone is `Already up to date`
+```
+$ git checkout release
+Switched to branch 'release'
+Your branch is up to date with 'origin/release'.
+
+$ git pull upstream release
+From github.com:exafree/charts_cf
+ * branch            release    -> FETCH_HEAD
+Already up to date.
+```
+4. Get dependencies and run the tests
+```
+$ make get test
+Resolving dependencies...
+Got dependencies!
+Running "flutter pub get" in charts_flutter_cf...                   0.4s
+Running "flutter pub get" in example...                             0.4s
+Precompiling executable... (10.3s)
+Precompiled test:test.
+00:41 +417: All tests passed!
+00:02 +28: All tests passed!
+```
+5. Create a release branch, use **next version** NOT 0.10.3+cf.
+This command updates version numbers in pubspec.yaml files,
+generates new changelog's, creates Release-x.y.z+cf branch,
+commits changes, creates tag, does a get, test and dry-run.
+```
+$ make rlease charts_ver=0.10.3+cf
+```
+6. Push the branch and tags to your fork
+```
+git push origin Release-0.10.3+cf
+```
+7. On [exafree/charts_cf](https://github.com/exafree/charts_cf)
+create a Pull Request and then Squash and Merge.
+8. Checkout release, pull from upstream, push to origin/release so
+the release branch of your fork is upto date:
+```
+$ git checkout release
+$ git pull upstream release
+$ git push origin release
+```
+9. Final check before publishing the git-status should show no
+modified, untracked or changed files. You should also verify your
+perferred test application works!:
+```
+$ make get test dry-run
+$ git status
+```
+10. if all is well publish:
+```
+$ make publish
+```
+
 ## Makefile
 
 The make file provides convience commands to get dependencies, test and publish
@@ -161,12 +230,14 @@ Usage charts_cf: make [Target]
 Targets:
   get:                  Get packages needed for charts_common_cf and charts_flutter_cf
   test:                 Test charts_common_cf and charts_flutter_cf
-  gen-changelog:        Generate CHANGELOG.md for charts_common_cf and charts_flutter_cf
-  update_version:       Update version numbers in pubspec.yaml files
-                           Example usage: charts_ver=0.10.3 make update_version
   dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf
+  release:              Updates version numbers in pubspec.yaml files,
+                        generates new changelog's, creates Release-x.y.z+cf branch,
+                        commits changes, creates tag, does a get, test and dry-run
+                           Example usage: make release charts_ver=0.10.3+cf
   publish:              Publish charts_common_cf and charts_flutter_cf
   test_common_failing:  Test failures are reported in charts_common_cf
   test_flutter_failing: Test failures are reported in charts_flutter_cf
   help:                 This help message
+
 ```

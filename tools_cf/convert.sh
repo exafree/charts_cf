@@ -20,10 +20,10 @@ cf2_script='s|package:charts_flutter/|package:charts_flutter_cf/|'
 find . -type f -name '*.dart' -print0 | xargs -0 \
    sed -i -e "${cc1_script} ; ${cc2_script} ; ${cf1_script} ; ${cf2_script}"
 
-# Change version to 0.10.2
-ver='s|version: 0.9.0|version: 0.10.2|'
+# Change version to 0.10.2+cf
+ver='s|version: 0.9.0|version: 0.10.2+cf|'
 homepage='s|homepage: .*$|homepage: https://github.com/exafree/charts_cf|'
-cover='s|charts_common: 0.9.0|charts_common: ^0.10.2|'
+cover='s|charts_common: 0.9.0|charts_common: ^0.10.2+cf|'
 log='s|logging: any|logging: ^0.11.4|'
 author='/author: /d'
 addco_cf='s|charts_common|charts_common_cf|'
@@ -73,11 +73,11 @@ echo 'Wink Saville <wink@saville.com' >> AUTHORS
 
 # Update CHANGELOG.md files
 sed -i -e '1i \
-# 0.10.2\
+# 0.10.2+cf\
 * Try again, forgot to add homepage to sed script for pubspec.\
 * Tweak link in charts_flutter_cf/README.md to github.com/exafree/charts_cf\
 \
-# 0.10.1\
+# 0.10.1+cf\
 * Second attempt at a Fork of google/charts with pachages renamed\
   from charts_common and charts_flutter to charts_common_cf and
   charts_flutter_cf. Where "cf" is an acronym for "community fork".\
@@ -86,7 +86,7 @@ sed -i -e '1i \
 * In Makefile fixed a typo, leaving off the '_cf' in `cd charts_common_cf`\
   in the publish_common target. And remove a debug `ls` in test_flutter target.\
 \
-# 0.10.0\
+# 0.10.0+cf\
 * Fork of google/charts with pachages renamed from charts_common\
   and charts_flutter to charts_common_cf and charts_flutter_cf.\
   Where "cf" is an acronym for "community fork".\

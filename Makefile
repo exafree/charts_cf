@@ -14,10 +14,11 @@ help:
 	@echo "Targets:"
 	@echo "  get:                  Get packages needed for charts_common_cf and charts_flutter_cf"
 	@echo "  test:                 Test charts_common_cf and charts_flutter_cf"
-	@echo "  gen-changelog:        Generate CHANGELOG.md for charts_common_cf and charts_flutter_cf"
-	@echo "  update_version:       Update version numbers in pubspec.yaml files"
-	@echo "                           Example usage: charts_ver=0.10.3 make update_version"
 	@echo "  dry-run:              Dry-run publish for charts_common_cf and charts_flutter_cf"
+	@echo "  release:              Updates version numbers in pubspec.yaml files,"
+	@echo "                        generates new changelog's, creates Release-x.y.z+cf branch,"
+	@echo "                        commits changes, creates tag, does a get, test and dry-run"
+	@echo "                           Example usage: make release charts_ver=0.10.3+cf"
 	@echo "  publish:              Publish charts_common_cf and charts_flutter_cf"
 	@echo "  test_common_failing:  Test failures are reported in charts_common_cf"
 	@echo "  test_flutter_failing: Test failures are reported in charts_flutter_cf"
@@ -69,12 +70,14 @@ gen-changelog: gen-changelog_common gen-changelog_flutter
 .PHONY: gen-changelog_common
 gen-changelog_common:
 	$(AT)(cd charts_common_cf; \
-	auto-changelog --stdout | cat - ../tools_cf/charts_common.original.CHANGELOG.md > CHANGELOG.md)
+	if [[ "$${charts_ver}" == "" ]]; then echo "No 'charts_ver=xxxx' parameter, aborting"; exit 1; fi; \
+	auto-changelog --latest-version $${charts_ver} --stdout | cat - ../tools_cf/charts_common.original.CHANGELOG.md > CHANGELOG.md)
 
 .PHONY: gen-changelog_flutter
 gen-changelog_flutter:
 	$(AT)(cd charts_flutter_cf; \
-	auto-changelog --stdout | cat - ../tools_cf/charts_flutter.original.CHANGELOG.md > CHANGELOG.md)
+	if [[ "$${charts_ver}" == "" ]]; then echo "No 'charts_ver=xxxx' parameter, aborting"; exit 1; fi; \
+	auto-changelog --latest-version $${charts_ver} --stdout | cat - ../tools_cf/charts_flutter.original.CHANGELOG.md > CHANGELOG.md)
 
 .PHONY: dry-run
 dry-run: dry-run_common dry-run_flutter
@@ -90,9 +93,19 @@ dry-run_flutter:
 	   flutter pub publish --dry-run; \
 	   ../tools_cf/change_common_to_path.sh)
 
-.PHONY: update_version
-update_version:
-	tools_cf/update_version.sh
+.PHONY: update-version
+update-version:
+	$(AT)(charts_ver=$${charts_ver} tools_cf/update_version.sh)
+
+.PHONY: release
+release: update-version gen-changelog
+	$(AT)( \
+	if [[ "$${charts_ver}" == "" ]]; then echo "No 'charts_ver=xxxx' parameter, aborting"; exit 1; fi; \
+	git commit -am "Release $${charts_ver}" && \
+	make gen-changelog charts_ver=$${charts_ver} && \
+	git commit -a --amend -C release && \
+	git tag $${charts_ver} && \
+	make get test dry-run)
 
 .PHONY: publish
 publish: get test publish_common publish_flutter

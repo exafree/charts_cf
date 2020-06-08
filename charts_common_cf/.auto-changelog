@@ -1,8 +1,8 @@
 {
   "template": "keepachangelog",
-  "unreleased": true,
+  "unreleased": false,
   "commitLimit": false,
-  "remote": "upstream",
-  "startingVersion": "v0.10.0",
+  "remote": "origin",
+  "startingVersion": "0.10.2",
   "appendGitLog": "."
 }
