@@ -148,7 +148,9 @@ whatever feature or bug fix you desire in `submodules/charts_cf/`. When it's
 working and tests are written, create a pull request from your fork to
 exafree/charts_cf.
 
-## Releasing
+## Releasing **NOT WORKING**
+
+This isn't working see issue #28.
 
 You can release from a fork.
 
