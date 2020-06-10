@@ -1,0 +1,37 @@
+# Changelog
+
+All notable changes to this project are documented by extracting
+information from git commits.  This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+{{#each releases}}
+  {{#if href}}
+    ## [{{title}}]({{href}}){{#if tag}} - {{isoDate}}{{/if}}
+  {{else}}
+    ## {{title}}{{#if tag}} - {{isoDate}}{{/if}}
+  {{/if}}
+
+  {{#if summary}}
+    {{summary}}
+  {{/if}}
+
+  {{#commit-list commits heading='### Direct Commits'}}
+    - {{#if breaking}}**Breaking change:** {{/if}}{{subject}}{{#if href}} [`{{shorthash}}`]({{href}}){{/if}}
+  {{/commit-list}}
+
+  {{#if merges}}
+    ### Merged Commits
+
+    {{#each merges}}
+      - {{#if commit.breaking}}**Breaking change:** {{/if}}{{message}}{{#if href}} [`#{{id}}`]({{href}}){{/if}}
+    {{/each}}
+  {{/if}}
+
+  {{#if fixes}}
+    ### Issues Fixed
+
+    {{#each fixes}}
+      - {{#each fixes}}{{#if href}}[`#{{id}}`]({{href}}): {{/if}}{{/each}}{{#with commit}}{{#if breaking}}**Breaking change:** {{/if}}{{#if merge}}{{merge.message}} {{#if merge.href}}[`#{{merge.id}}`]({{merge.href}}){{/if}}{{else}}{{subject}}{{#if href}} [`{{shorthash}}`]({{href}}){{/if}}{{/if}}{{/with}}
+    {{/each}}
+  {{/if}}
+
+{{/each}}

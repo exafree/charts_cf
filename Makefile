@@ -97,13 +97,25 @@ dry-run_flutter:
 update-version:
 	$(AT)(charts_ver=$${charts_ver} tools_cf/update_version.sh)
 
+# The weird bit where we do:
+#    git commit -am "Release $${charts_ver}"
+#    make gen-changelog charts_ver=$${charts_ver}
+#    git commit -a --amend -C $${cur_git_branch}
+# Is needed because the first commit doesn't contain
+# the "Direct Commit" "Release x.y.x+cf:". So we run
+# `make gen-changelog charts_ver=$${charts_ver}` a
+# second time, which does create the desired output
+# and then ammed the first commit.
 .PHONY: release
 release: update-version gen-changelog
 	$(AT)( \
+	if [[ "$${expected_branch}" == "" ]]; then expected_branch="release"; fi; \
+	cur_git_branch=`git rev-parse --abbrev-ref HEAD`; \
+	if [[ "$${cur_git_branch}" != "$${expected_branch}" ]]; then echo "Not on '$${expected_branch}' branch, aborting"; exit 1; fi; \
 	if [[ "$${charts_ver}" == "" ]]; then echo "No 'charts_ver=xxxx' parameter, aborting"; exit 1; fi; \
 	git commit -am "Release $${charts_ver}" && \
 	make gen-changelog charts_ver=$${charts_ver} && \
-	git commit -a --amend -C release && \
+	git commit -a --amend -C $${cur_git_branch} && \
 	git tag $${charts_ver} && \
 	make get test dry-run)
 
