@@ -1,5 +1,5 @@
 {
-  "template": "keepachangelog",
+  "template": "../tools_cf/changelog.hbs",
   "unreleased": false,
   "commitLimit": false,
   "remote": "origin",

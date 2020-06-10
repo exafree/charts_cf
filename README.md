@@ -148,34 +148,22 @@ whatever feature or bug fix you desire in `submodules/charts_cf/`. When it's
 working and tests are written, create a pull request from your fork to
 exafree/charts_cf.
 
-## Releasing **NOT WORKING**
+## Releasing
 
-This isn't working see issue #28.
+Release from [exafree/charts_cf](https://github.com/exafree/charts_cf) with
+the `release` branch checked out.
 
-You can release from a fork.
-
-1. Fork exafree/charts and clone, if you've not already done so.
-2. Add an upstream remote, if you've not already done so.
+1. Clone exafree/charts, if you've not already done so.
 ```
-$ git remote add upstream git@github.com:exafree/charts_cf
-$ git remote -v
-origin	git@github.com:winksaville/charts_cf (fetch)
-origin	git@github.com:winksaville/charts_cf (push)
-upstream	git@github.com:exafree/charts_cf (fetch)
-upstream	git@github.com:exafree/charts_cf (push)
+$ git clone git@github.com:exafree/charts_cf
 ```
-3. Sync with upstream and be sure your clone is `Already up to date`
+2. Checkout `release` branch, if you've not already done so.
 ```
 $ git checkout release
 Switched to branch 'release'
 Your branch is up to date with 'origin/release'.
-
-$ git pull upstream release
-From github.com:exafree/charts_cf
- * branch            release    -> FETCH_HEAD
-Already up to date.
 ```
-4. Get dependencies and run the tests
+3. Get dependencies and run the tests
 ```
 $ make get test
 Resolving dependencies...
@@ -187,37 +175,42 @@ Precompiled test:test.
 00:41 +417: All tests passed!
 00:02 +28: All tests passed!
 ```
-5. Create a release branch, use **next version** NOT 0.10.3+cf.
+4. Make the release commit, use the **next version** NOT 0.10.3+cf.
 This command updates version numbers in pubspec.yaml files,
-generates new changelog's, creates Release-x.y.z+cf branch,
-commits changes, creates tag, does a get, test and dry-run.
+generates new changelog's, commits changes, creates tag,
+does a get, test and dry-run.
 ```
 $ make rlease charts_ver=0.10.3+cf
 ```
-6. Push the branch and tags to your fork
+5. Do a `git status`, it should show no modified, untracked
+or changed files.
 ```
-git push origin Release-0.10.3+cf
-```
-7. On [exafree/charts_cf](https://github.com/exafree/charts_cf)
-create a Pull Request and then Squash and Merge.
-8. Checkout release, pull from upstream, push to origin/release so
-the release branch of your fork is upto date:
-```
-$ git checkout release
-$ git pull upstream release
-$ git push origin release
-```
-9. Final check before publishing the git-status should show no
-modified, untracked or changed files. You should also verify your
-perferred test application works!:
-```
-$ make get test dry-run
 $ git status
 ```
-10. if all is well publish:
+6. Verify your preferred test application works by changing the
+`charts_cf:` `path` field in `pubspec.yaml` to point to this local repo:
+```
+  #charts_flutter_cf: ^0.10.2
+  charts_flutter_cf:
+    path: ../path/to/exafree/charts_cf
+```
+7. Push the branch and tag, use the **next version** NOT 0.10.3+cf
+```
+git push origin release 0.10.3+cf
+```
+8. If all is well, publish:
 ```
 $ make publish
 ```
+9. Verify your preferred test application works with the
+newly published charts_cf. Change the `charts_cf:` in `pubspec.yaml`
+point to the **next version** NOT 0.10.3+cf:
+```
+  charts_flutter_cf: ^0.10.3+cf
+  #charts_flutter_cf:
+  #  path: ../path/to/exafree/charts_cf
+```
+10. Be Happy :)
 
 ## Makefile
 

@@ -1,7 +1,7 @@
 * Try again, forgot to add homepage to sed script for pubspec.
 * Tweak link in charts_flutter_cf/README.md to github.com/exafree/charts_cf
 
-# 0.10.1
+## 0.10.1
 * Second attempt at a Fork of google/charts with pachages renamed
   from charts_common and charts_flutter to charts_common_cf and
 harts_flutter_cf. Where "cf" is an acronym for "community fork".
@@ -10,25 +10,25 @@ harts_flutter_cf. Where "cf" is an acronym for "community fork".
 * In Makefile fixed a typo, leaving off the _cf in `cd charts_common_cf`
   in the publish_common target. And remove a debug `ls` in test_flutter target.
 
-# 0.10.0
+## 0.10.0
 * Fork of google/charts with pachages renamed from charts_common
   and charts_flutter to charts_common_cf and charts_flutter_cf.
   Where "cf" is an acronym for "community fork".
 
-# 0.9.0
+## 0.9.0
 * Internal bug fixes
 * Bump versions in Gemlock file due to security alerts
 
-# 0.8.1
+## 0.8.1
 * Update intl version.
 
-# 0.8.0
+## 0.8.0
 * Bug fixes from open source.
 
-# 0.7.0
+## 0.7.0
 * Added vertical bar label
 
-# 0.6.0
+## 0.6.0
 * Bars can now be rendered on line charts.
 * Negative measure values will now be rendered on bar charts as a separate stack from the positive
 values.
@@ -41,7 +41,7 @@ has been added to Series, and corresponding data to the datum. We could not use 
 these elements, because that color is already applied to the internal section of points on line
 charts (including highlighter behaviors).
 
-# 0.5.0
+## 0.5.0
 * SelectionModelConfig's listener parameter has been renamed to "changeListener". This is a breaking
 change. Please rename any existing uses of the "listener" parameter to "changeListener". This was
 named in order to add an additional listener "updateListener" that listens to any update requests,
@@ -51,7 +51,7 @@ getMeasureAxis({String axisId) so that getting the primary measure axis will not
 that does not match the secondary measure axis id. This affects users implementing custom behaviors
 using the existing method.
 
-# 0.4.0
+## 0.4.0
 * Fixed export file to export ChartsBehavior in the Flutter library instead of the one that resides
 in charts_common. The charts_common behavior should not be used except internally in the
 charts_flutter library. This is a breaking change if you are using charts_common behavior.
@@ -63,7 +63,7 @@ BarRendererConfig<String>. This is a breaking change.
 * BarTargetLineRendererConfig is no longer default of type String, please change current usage to
 BarTargetLineRendererConfig<String>. This is a breaking change.
 
-# 0.3.0
+## 0.3.0
 * Simplified API by removing the requirement for specifying the datum type when creating a chart.
 For example, previously to construct a bar chart the syntax was 'new BarChart<MyDatumType>()'.
 The syntax is now cleaned up to be 'new BarChart()'. Please refer to the
@@ -73,11 +73,11 @@ The syntax is now cleaned up to be 'new BarChart()'. Please refer to the
 * Added support for rendering area skirts to line charts
 * Added support for configurable fill colors to bar charts
 
-# 0.2.0
+## 0.2.0
 
 * Update color palette. Please use MaterialPalette instead of QuantumPalette.
 * Dart2 fixes
 
-# 0.1.0
+## 0.1.0
 
 Initial release.
