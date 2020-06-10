@@ -1,5 +1,5 @@
 name: charts_flutter_cf
-version: 0.10.2
+version: 0.10.3+cf
 description: Material Design charting library for flutter.
 homepage: https://github.com/exafree/charts_cf
 
@@ -12,7 +12,7 @@ dependencies:
   #
   # The pub version of charts_flutter_cf will point to the pub version of charts_common_cf.
   # The latest pub version is commented out and shown below as an example.
-  # charts_common_cf: ^0.10.2
+  # charts_common_cf: ^0.10.3+cf
   charts_common_cf:
     path: ../charts_common_cf/
   collection: ^1.14.5

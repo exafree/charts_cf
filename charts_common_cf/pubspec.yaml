@@ -1,5 +1,5 @@
 name: charts_common_cf
-version: 0.10.2
+version: 0.10.3+cf
 description: A common library for charting packages.
 homepage: https://github.com/exafree/charts_cf
 
