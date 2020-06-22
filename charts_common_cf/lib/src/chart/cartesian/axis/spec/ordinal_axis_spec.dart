@@ -177,7 +177,14 @@ class FixedPixelSpaceOrdinalScaleSpec implements OrdinalScaleSpec {
   }
 
   @override
-  bool operator ==(Object other) => other is SimpleOrdinalScaleSpec;
+  bool operator ==(Object other) {
+    if (other is FixedPixelSpaceOrdinalScaleSpec) {
+      return pixelSpaceBetweenBars ==
+        (other as FixedPixelSpaceOrdinalScaleSpec).pixelSpaceBetweenBars;
+    } else {
+      return false;
+    }
+  }
 
   @override
   int get hashCode => 37;
@@ -197,8 +204,14 @@ class FixedPixelOrdinalScaleSpec implements OrdinalScaleSpec {
     return scale;
   }
 
-  @override
-  bool operator ==(Object other) => other is SimpleOrdinalScaleSpec;
+   @override
+  bool operator ==(Object other) {
+    if (other is FixedPixelOrdinalScaleSpec) {
+      return pixels == (other as FixedPixelOrdinalScaleSpec).pixels;
+    } else {
+      return false;
+    }
+  }
 
   @override
   int get hashCode => 37;
